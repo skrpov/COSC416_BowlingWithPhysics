@@ -7,6 +7,7 @@ public class BallController : MonoBehaviour
     [SerializeField] private InputManager _inputManager;
 
     private Rigidbody _rigidBody;
+    private bool _isBallLaunched = false;
 
     void Start()
     {
@@ -16,6 +17,11 @@ public class BallController : MonoBehaviour
 
     private void LaunchBall() 
     {
+        if (_isBallLaunched)
+            return;
+
+        _isBallLaunched = true;
+
         _rigidBody.AddForce(transform.forward * _force, ForceMode.Impulse);
     }
 
