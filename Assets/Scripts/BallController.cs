@@ -3,26 +3,32 @@ using UnityEngine.Events;
 
 public class BallController : MonoBehaviour
 {
-    [SerializeField] private float _force = 1.0f;
-    [SerializeField] private InputManager _inputManager;
+    [SerializeField] private float force = 1.0f;
+    [SerializeField] private InputManager inputManager;
+    [SerializeField] private Transform ballAnchor;
 
-    private Rigidbody _rigidBody;
-    private bool _isBallLaunched = false;
+    private Rigidbody rigidBody;
+    private bool isBallLaunched = false;
 
     void Start()
     {
-        _rigidBody = GetComponent<Rigidbody>();
-        _inputManager.OnSpacePressed.AddListener(LaunchBall);
+        rigidBody = GetComponent<Rigidbody>();
+        inputManager.OnSpacePressed.AddListener(LaunchBall);
+        transform.parent = ballAnchor;
+        transform.localPosition = Vector3.zero;
+        rigidBody.isKinematic = true;
     }
 
     private void LaunchBall() 
     {
-        if (_isBallLaunched)
+        if (isBallLaunched)
             return;
 
-        _isBallLaunched = true;
+        isBallLaunched = true;
+        transform.parent = null;
 
-        _rigidBody.AddForce(transform.forward * _force, ForceMode.Impulse);
+        rigidBody.isKinematic = false;
+        rigidBody.AddForce(transform.forward * force, ForceMode.Impulse);
     }
 
     void Update()
